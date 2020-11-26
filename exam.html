@@ -37,9 +37,9 @@
             render() {
                 return (
                     <div id="markdown-preview">
-                        <div>Editor</div>
+                        <div id="editor-label">Editor</div>
                         <textarea id="editor" value={this.state.text} onChange={this.changeText} cols="70" rows="10"></textarea>
-                        <div>Preview</div>
+                        <div id="preview-label">Preview</div>
                         <div id="preview" dangerouslySetInnerHTML={{ __html: marked(this.state.text) }}></div>
                     </div >
                 )
