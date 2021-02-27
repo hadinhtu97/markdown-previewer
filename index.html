@@ -1,7 +1,97 @@
-<textarea name="editor" id="editor" cols="30"
-    rows="10">a header (H1 size), a sub header (H2 size), a link, inline code, a code block, a list item, a blockquote, an image, and bolded text.</textarea>
-<div id="preview">
-    a header (H1 size), a sub header (H2 size), a link, inline code, a code block, a list item, a blockquote, an image,
-    and
-    bolded text.
-</div>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Markdown Preview</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/1.2.5/marked.min.js"
+        integrity="sha512-My71VwLF3s80OF0HgzduZQ6x6M66XwatDQXrF/AjgILIpN8veiS56WecfNTeDTfjnYb+rCud80XS9bR3fkiT+g=="
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        marked.setOptions({
+            breaks: true
+        });
+
+        class MarkdownPreview extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    text: markdown
+                }
+                this.changeText = this.changeText.bind(this);
+            }
+            changeText(e) {
+                this.setState({
+                    text: e.target.value
+                })
+            }
+
+            render() {
+                return (
+                    <div id="markdown-preview">
+                        <div id="editor-label">Editor</div>
+                        <textarea id="editor" value={this.state.text} onChange={this.changeText} cols="70" rows="10"></textarea>
+                        <div id="preview-label">Preview</div>
+                        <div id="preview" dangerouslySetInnerHTML={{ __html: marked(this.state.text) }}></div>
+                    </div >
+                )
+            }
+        }
+
+        const markdown = `# Welcome to my React Markdown Previewer!
+
+## This is a sub-heading...
+### And here's some other cool stuff:
+
+Heres some code, \`<div></div>\`, between 2 backticks.
+
+\`\`\`
+// this is multi-line code:
+
+function anotherExample(firstLine, lastLine) {
+  if (firstLine == '\`\`\`' && lastLine == '\`\`\`') {
+    return multiLineCode;
+  }
+}
+\`\`\`
+
+You can also make text **bold**... whoa!
+Or _italic_.
+Or... wait for it... **_both!_**
+And feel free to go crazy ~~crossing stuff out~~.
+
+There's also [links](https://www.freecodecamp.com), and
+> Block Quotes!
+
+And if you want to get really crazy, even tables:
+
+Wild Header | Crazy Header | Another Header?
+------------ | ------------- | -------------
+Your content can | be here, and it | can be here....
+And here. | Okay. | I think we get it.
+
+- And of course there are lists.
+  - Some are bulleted.
+     - With different indentation levels.
+        - That look like this.
+
+
+1. And there are numbererd lists too.
+1. Use just 1s if you want!
+1. And last but not least, let's not forget embedded images:
+
+![React Logo w/ Text](https://goo.gl/Umyytc)
+`;
+        ReactDOM.render(<MarkdownPreview />, document.getElementById('root'));
+    </script>
+</body>
+
+</html>
